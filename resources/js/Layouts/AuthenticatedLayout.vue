@@ -64,10 +64,13 @@ import CreateFolderDropdown from "../Components/app/CreateFolderDropdown.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import Navigation from "../Components/app/Navigation.vue";
 import Modal from "@/Components/Modal.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
+
+const url = usePage().url;
 
 const form = useForm({
     file: "",
+    path: url,
 });
 
 const isModalOpen = ref(false);
@@ -79,6 +82,8 @@ const openNewFolderModal = () => {
     isModalOpen.value = !isModalOpen.value;
     nextTick(() => {
         folderInput.value.focus();
+
+        console.log(form.path);
     });
 };
 

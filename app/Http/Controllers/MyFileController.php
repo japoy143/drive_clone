@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,7 +13,16 @@ class MyFileController extends Controller
      */
     public function index()
     {
-        return Inertia::render('MyFiles');
+        return Inertia::render('MyFiles', [
+            'files' => File::all(),
+        ]);
+    }
+
+
+    public function directory(Request $request)
+    {
+        $path = $request->path;
+        return Inertia::render('FileDirectories/Directory', ['path' => $path]);
     }
 
     /**

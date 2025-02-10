@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 //TODO:create a Route group for crud files
 Route::post('/create-file', [FileController::class, 'saveFile'])->name('savefile');
+Route::get('/file/{path}', [MyFileController::class, 'directory'])->name('directory');
 
 
 Route::middleware('auth')->group(function () {

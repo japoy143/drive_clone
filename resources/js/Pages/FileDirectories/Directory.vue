@@ -1,12 +1,13 @@
 <template>
-    <Head title="Dashboard" />
-
     <AuthenticatedLayout>
-        <div>Dashboard</div>
+        <h1 class="text-xl font-medium">{{ path }}</h1>
     </AuthenticatedLayout>
 </template>
 
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
+
+defineProps({
+    path: String,
+});
 </script>
