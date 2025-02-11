@@ -28,13 +28,13 @@ class FileController extends Controller
         if ($path[1] === 'file' && $path_length > 2) {
             $node = File::where('name', '=', $last_object)->first();
 
-
             $node->appendNode($file);
 
-            dd('save');
+        } else {
+            $file->makeRoot()->save();
         }
 
-        $file->makeRoot()->save();
+
 
 
     }

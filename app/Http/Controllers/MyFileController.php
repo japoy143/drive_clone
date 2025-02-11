@@ -14,7 +14,7 @@ class MyFileController extends Controller
     public function index()
     {
         return Inertia::render('MyFiles', [
-            'files' => File::all(),
+            'files' => File::where('parent_id', '=', null)->get(),
         ]);
     }
 

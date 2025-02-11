@@ -2,10 +2,13 @@
     <div class="flex flex-row gap-4 h-screen w-full p-4">
         <!-- Side Navigation -->
         <div class="w-[200px]">
-            <div class="flex items-center gap-2 font-medium">
+            <Link
+                :href="route('dashboard')"
+                class="flex items-center gap-2 font-medium"
+            >
                 <FolderIcon class="size-8" />
                 <h2>Free Drive</h2>
-            </div>
+            </Link>
             <div class="mt-4 space-y-2 flex flex-col">
                 <CreateFolderDropdown
                     dropDownName="Create Folder"
@@ -64,9 +67,9 @@ import CreateFolderDropdown from "../Components/app/CreateFolderDropdown.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import Navigation from "../Components/app/Navigation.vue";
 import Modal from "@/Components/Modal.vue";
-import { useForm, usePage } from "@inertiajs/vue3";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
 
-const url = usePage().url;
+const url = decodeURIComponent(usePage().url);
 
 const form = useForm({
     file: "",
@@ -89,7 +92,13 @@ const openNewFolderModal = () => {
 
 //save file
 const saveFile = () => {
-    form.post(route("savefile"));
+    form.post(route("savefile"), {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+            isModalOpen.value = false;
+        },
+    });
 };
 
 //dropdown items
