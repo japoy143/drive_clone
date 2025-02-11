@@ -22,7 +22,9 @@ class MyFileController extends Controller
     public function directory(Request $request)
     {
         $path = $request->path;
-        return Inertia::render('FileDirectories/Directory', ['path' => $path]);
+        $current_file = File::where('name', '=', $path)->first();
+        $children = File::where('parent_id', "=", $current_file->id)->get();
+        return Inertia::render('FileDirectories/Directory', ['path' => $path, 'files' => $children]);
     }
 
     /**
