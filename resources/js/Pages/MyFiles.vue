@@ -18,12 +18,17 @@
         >
             <div v-for="file in files" :key="file.id" class="mt-2">
                 <Link
-                    class="flex items-center h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
+                    class="flex items-center justify-between h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
                     :href="route('directory', file.name)"
                     @mouseover="onChangeHoverId($event, file.id)"
                 >
-                    <FolderIcon class="size-6" />
-                    <p>{{ file.name }}</p>
+                    <div class="flex space-x-2">
+                        <FolderIcon class="size-6" />
+                        <p>{{ file.name }}</p>
+                    </div>
+                    <div>
+                        <StarSolidIcon class="size-6" v-if="file.is_favorite" />
+                    </div>
                 </Link>
                 <div
                     v-if="hoverIdHolder === file.id"
@@ -38,7 +43,12 @@
                     >
                         Rename
                     </p>
-                    <p class="hover:border-b-2">Favorite</p>
+                    <Link
+                        method="patch"
+                        :href="route('favorite', file.id)"
+                        class="hover:border-b-2"
+                        >Favorite</Link
+                    >
                     <p class="hover:border-b-2">Share</p>
                     <Link
                         method="delete"
@@ -66,7 +76,9 @@ import {
     ListBulletIcon,
     Squares2X2Icon,
     FolderIcon,
+    StarIcon,
 } from "@heroicons/vue/24/outline";
+import { StarIcon as StarSolidIcon } from "@heroicons/vue/20/solid";
 import AuthenticatedLayout from "../Layouts/AuthenticatedLayout.vue";
 import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";

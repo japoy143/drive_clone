@@ -34,6 +34,12 @@ class MyFileController extends Controller
     }
 
 
+    public function favorite(File $file)
+    {
+        $file->update(['is_favorite' => 1]);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

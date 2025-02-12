@@ -37,9 +37,11 @@ Route::get('/file/{path}', [MyFileController::class, 'directory'])->name('direct
 
 
 //rename
-Route::post('/rename/{file}', [MyFileController::class, 'rename'])->name('rename');
+Route::patch('/rename/{file}', [MyFileController::class, 'rename'])->name('rename');
 //trash
 Route::delete('/delete/{file}', [MyFileController::class, 'destroy'])->name('trash');
+//favorite
+Route::patch('/favorite/{file}', [MyFileController::class, 'favorite'])->name('favorite');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

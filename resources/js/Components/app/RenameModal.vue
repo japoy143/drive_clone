@@ -20,7 +20,7 @@
                     class="inline-flex justify-center rounded-md border border-transparent bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/70"
                     @click="saveFile"
                 >
-                    Create
+                    Rename
                 </button>
             </div>
         </form>
@@ -49,7 +49,7 @@ const form = useForm({
 
 //save file
 const saveFile = () => {
-    form.post(route("rename", props.fileId), {
+    form.patch(route("rename", props.fileId), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();

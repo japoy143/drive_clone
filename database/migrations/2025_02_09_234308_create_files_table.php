@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->nestedSet();
             $table->boolean('is_folder');
             $table->integer('size')->nullable();
+            $table->boolean('is_favorite')->default(0);
             $table->timestamps();
             $table->foreignIdFor(User::class, 'created_by');
             $table->foreignIdFor(User::class, 'updated_by');
