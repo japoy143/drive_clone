@@ -16,33 +16,48 @@
                     : 'flex-row flex-wrap gap-x-2',
             ]"
         >
-            <Link
-                v-for="file in files"
-                :key="file.id"
-                :href="route('directory', file.name)"
-                class="mt-2"
-            >
-                <div
+            <div v-for="file in files" :key="file.id" class="mt-2">
+                <Link
                     class="flex items-center h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
+                    :href="route('directory', file.name)"
                     @mouseover="onChangeHoverId($event, file.id)"
                 >
                     <FolderIcon class="size-6" />
                     <p>{{ file.name }}</p>
-                </div>
+                </Link>
                 <div
                     v-if="hoverIdHolder === file.id"
                     :key="file.id"
-                    class="absolute w-[200px] px-4 py-2 space-y-2 bg-gray-100 z-100 shadow-md"
+                    class="absolute w-[200px] px-4 py-2 space-y-2 bg-gray-100 z-100 shadow-md cursor-pointer"
                     :class="[is_list_view ? 'left-52' : 'mt-2']"
                     :style="is_list_view ? { top: `${folderPosition}px` } : {}"
                 >
-                    <p>Rename</p>
-                    <p>Favorite</p>
-                    <p>Share</p>
-                    <p>Delete</p>
+                    <p
+                        class="hover:border-b-2"
+                        @click="openModal(file.name, file.id)"
+                    >
+                        Rename
+                    </p>
+                    <p class="hover:border-b-2">Favorite</p>
+                    <p class="hover:border-b-2">Share</p>
+                    <Link
+                        method="delete"
+                        :href="route('trash', file.id)"
+                        class="hover:border-b-2"
+                    >
+                        Delete
+                    </Link>
                 </div>
-            </Link>
+            </div>
         </div>
+
+        <!-- Modal Here -->
+        <RenameModal
+            :isModalOpen="isModalOpen"
+            :closeModal="closeModal"
+            :fileName="fileName"
+            :fileId="fileId"
+        />
     </AuthenticatedLayout>
 </template>
 
@@ -55,6 +70,8 @@ import {
 import AuthenticatedLayout from "../Layouts/AuthenticatedLayout.vue";
 import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
+import RenameModal from "@/Components/app/RenameModal.vue";
+
 defineProps({
     files: Object,
 });
@@ -82,5 +99,20 @@ const onChangeHoverId = (event, id) => {
 const onChangeListView = () => {
     is_list_view.value = !is_list_view.value;
     console.log(is_list_view);
+};
+
+//Modals
+const fileName = ref("");
+const fileId = ref("");
+const isModalOpen = ref(false);
+
+const openModal = (name, id) => {
+    isModalOpen.value = !isModalOpen.value;
+    fileName.value = name;
+    fileId.value = id;
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
 };
 </script>

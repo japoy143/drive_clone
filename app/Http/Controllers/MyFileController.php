@@ -27,6 +27,14 @@ class MyFileController extends Controller
         return Inertia::render('FileDirectories/Directory', ['path' => $path, 'files' => $children]);
     }
 
+
+    public function rename(Request $request, File $file)
+    {
+        $file->update(['name' => $request->fileName]);
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -70,8 +78,8 @@ class MyFileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(File $file)
     {
-        //
+        $file->delete();
     }
 }

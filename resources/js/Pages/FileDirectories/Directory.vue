@@ -37,10 +37,10 @@
                     :class="[is_list_view ? 'left-52' : 'mt-2']"
                     :style="is_list_view ? { top: `${folderPosition}px` } : {}"
                 >
-                    <p>Rename</p>
-                    <p>Favorite</p>
-                    <p>Share</p>
-                    <p>Delete</p>
+                    <p class="hover:border-b-2">Rename</p>
+                    <p class="hover:border-b-2">Favorite</p>
+                    <p class="hover:border-b-2">Share</p>
+                    <p class="hover:border-b-2">Delete</p>
                 </div>
             </Link>
         </div>

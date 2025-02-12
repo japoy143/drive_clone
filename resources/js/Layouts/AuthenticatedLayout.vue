@@ -18,12 +18,8 @@
                 <ResponsiveNavLink :href="route('myfiles')"
                     >My Files</ResponsiveNavLink
                 >
-                <ResponsiveNavLink :href="route('sharedfiles')"
-                    >Shared Files</ResponsiveNavLink
-                >
-                <ResponsiveNavLink :href="route('trash')"
-                    >Trash</ResponsiveNavLink
-                >
+                <ResponsiveNavLink href="/">Shared Files</ResponsiveNavLink>
+                <ResponsiveNavLink href="/">Trash</ResponsiveNavLink>
             </div>
         </div>
 
@@ -31,32 +27,13 @@
             <Navigation />
             <slot />
         </main>
-        <Modal :show="isModalOpen" maxWidth="md">
-            <form class="px-2 py-2 flex flex-col">
-                <input
-                    ref="folderInput"
-                    type="text"
-                    v-model="form.file"
-                    placeholder="Enter File Name"
-                />
-                <div class="mt-2 flex justify-end space-x-2">
-                    <button
-                        type="button"
-                        class="inline-flex justify-center rounded-md border border-transparent bg-black/20 px-4 py-2 text-sm font-medium text-black hover:bg-black hover:text-white"
-                        @click="openNewFolderModal"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="button"
-                        class="inline-flex justify-center rounded-md border border-transparent bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/70"
-                        @click="saveFile"
-                    >
-                        Create
-                    </button>
-                </div>
-            </form>
-        </Modal>
+        <!-- Modal Here -->
+        <SaveModal
+            :isModalOpen="isModalOpen"
+            :openToCreateActions="openToCreateNewFolderModal"
+            :url="url"
+            :closeModal="closeModal"
+        />
     </div>
 </template>
 
@@ -66,39 +43,20 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import CreateFolderDropdown from "../Components/app/CreateFolderDropdown.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import Navigation from "../Components/app/Navigation.vue";
-import Modal from "@/Components/Modal.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
+//ignore
+import SaveModal from "@/Components/app/ModalSave.vue";
 
 const url = decodeURIComponent(usePage().url);
 
-const form = useForm({
-    file: "",
-    path: url,
-});
-
 const isModalOpen = ref(false);
 
-//input focus
-const folderInput = ref(null);
-
-const openNewFolderModal = () => {
+const openToCreateNewFolderModal = () => {
     isModalOpen.value = !isModalOpen.value;
-    nextTick(() => {
-        folderInput.value.focus();
-
-        console.log(form.path);
-    });
 };
 
-//save file
-const saveFile = () => {
-    form.post(route("savefile"), {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset();
-            isModalOpen.value = false;
-        },
-    });
+const closeModal = () => {
+    isModalOpen.value = false;
 };
 
 //dropdown items
@@ -106,7 +64,7 @@ const dropDownItems = [
     {
         name: "New Folder",
         active: false,
-        action: openNewFolderModal,
+        action: openToCreateNewFolderModal,
     },
     {
         name: "Upload Folder",
