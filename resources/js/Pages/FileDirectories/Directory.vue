@@ -52,7 +52,12 @@
                         class="hover:border-b-2"
                         >Favorite</Link
                     >
-                    <p class="hover:border-b-2">Share</p>
+                    <p
+                        class="hover:border-b-2"
+                        @click="openShareUrlModal(file.path)"
+                    >
+                        Share
+                    </p>
                     <Link
                         method="delete"
                         :href="route('delete.file', file.id)"
@@ -71,6 +76,13 @@
         :fileName="fileName"
         :fileId="fileId"
     />
+
+    <!-- Share File Modal -->
+    <ShareUrlLinkModal
+        :isModalOpen="isShareUrlModal"
+        :closeModal="closeShareUrlModal"
+        :urlLink="urlLink"
+    />
 </template>
 
 <script setup>
@@ -85,6 +97,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { ref } from "vue";
 import RenameModal from "@/Components/app/RenameModal.vue";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/20/solid";
+import ShareUrlLinkModal from "@/Components/app/ShareUrlLinkModal.vue";
 
 //props
 
@@ -102,6 +115,9 @@ const folderPosition = ref(0);
 const fileName = ref("");
 const fileId = ref("");
 const isModalOpen = ref(false);
+//share url modal
+const isShareUrlModal = ref(false);
+const urlLink = ref("");
 
 //methods
 
@@ -130,5 +146,15 @@ const openModal = (name, id) => {
 
 const closeModal = () => {
     isModalOpen.value = false;
+};
+
+//shareUrl Modal Methods
+const openShareUrlModal = (url) => {
+    isShareUrlModal.value = true;
+    urlLink.value = url;
+};
+
+const closeShareUrlModal = () => {
+    isShareUrlModal.value = false;
 };
 </script>

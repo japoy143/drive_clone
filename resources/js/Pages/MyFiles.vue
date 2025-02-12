@@ -50,7 +50,12 @@
                         class="hover:border-b-2"
                         >Favorite</Link
                     >
-                    <p class="hover:border-b-2">Share</p>
+                    <p
+                        @click="openShareUrlModal(file.path)"
+                        class="hover:border-b-2"
+                    >
+                        Share
+                    </p>
                     <Link
                         method="delete"
                         :href="route('delete.file', file.id)"
@@ -69,6 +74,12 @@
             :fileName="fileName"
             :fileId="fileId"
         />
+        <!-- Share File Modal -->
+        <ShareUrlLinkModal
+            :isModalOpen="isShareUrlModal"
+            :closeModal="closeShareUrlModal"
+            :urlLink="urlLink"
+        />
     </AuthenticatedLayout>
 </template>
 
@@ -84,6 +95,7 @@ import AuthenticatedLayout from "../Layouts/AuthenticatedLayout.vue";
 import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
 import RenameModal from "@/Components/app/RenameModal.vue";
+import ShareUrlLinkModal from "@/Components/app/ShareUrlLinkModal.vue";
 
 //props
 defineProps({
@@ -101,6 +113,10 @@ const folderPosition = ref(0);
 const fileName = ref("");
 const fileId = ref("");
 const isModalOpen = ref(false);
+
+//share url modal
+const isShareUrlModal = ref(false);
+const urlLink = ref("");
 
 //methods
 
@@ -129,5 +145,15 @@ const openModal = (name, id) => {
 
 const closeModal = () => {
     isModalOpen.value = false;
+};
+
+//shareUrl Modal Methods
+const openShareUrlModal = (url) => {
+    isShareUrlModal.value = true;
+    urlLink.value = url;
+};
+
+const closeShareUrlModal = () => {
+    isShareUrlModal.value = false;
 };
 </script>
