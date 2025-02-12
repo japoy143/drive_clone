@@ -19,7 +19,7 @@
             <div v-for="file in files" :key="file.id" class="mt-2">
                 <Link
                     class="flex items-center justify-between h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
-                    :href="route('directory', file.name)"
+                    :href="route('root.directory', file.name)"
                     @mouseover="onChangeHoverId($event, file.id)"
                 >
                     <div class="flex space-x-2">
@@ -30,6 +30,7 @@
                         <StarSolidIcon class="size-6" v-if="file.is_favorite" />
                     </div>
                 </Link>
+                <!-- Floating Options -->
                 <div
                     v-if="hoverIdHolder === file.id"
                     :key="file.id"
@@ -52,7 +53,7 @@
                     <p class="hover:border-b-2">Share</p>
                     <Link
                         method="delete"
-                        :href="route('trash', file.id)"
+                        :href="route('delete.file', file.id)"
                         class="hover:border-b-2"
                     >
                         Delete
@@ -84,17 +85,24 @@ import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
 import RenameModal from "@/Components/app/RenameModal.vue";
 
+//props
 defineProps({
     files: Object,
 });
 
-let is_list_view = ref(true);
+//refs
 
+let is_list_view = ref(true);
 //mouser over id
 const hoverIdHolder = ref(null);
-
 //positions
 const folderPosition = ref(0);
+//modal refs
+const fileName = ref("");
+const fileId = ref("");
+const isModalOpen = ref(false);
+
+//methods
 
 const closeHoverId = () => {
     hoverIdHolder.value = null;
@@ -112,11 +120,6 @@ const onChangeListView = () => {
     is_list_view.value = !is_list_view.value;
     console.log(is_list_view);
 };
-
-//Modals
-const fileName = ref("");
-const fileId = ref("");
-const isModalOpen = ref(false);
 
 const openModal = (name, id) => {
     isModalOpen.value = !isModalOpen.value;

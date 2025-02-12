@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,7 +13,17 @@ class TrashController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Trash');
+        $all_trash = File::onlyTrashed()->get();
+        return Inertia::render('Trash', [
+            'trash_files' => $all_trash
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $all_trash = File::onlyTrashed()->findOrFail($id);
+        $all_trash->restore();
+
     }
 
     /**

@@ -19,12 +19,22 @@ class MyFileController extends Controller
     }
 
 
-    public function directory(Request $request)
+    public function rootToDirectory(Request $request)
     {
         $path = $request->path;
         $current_file = File::where('name', '=', $path)->first();
         $children = File::where('parent_id', "=", $current_file->id)->get();
         return Inertia::render('FileDirectories/Directory', ['path' => $path, 'files' => $children]);
+    }
+
+    public function directory(Request $request)
+    {
+
+        $path = $request->path;
+        $current_file = File::where('path', '=', $path)->first();
+        $file_directory_name = $current_file->name;
+        $children = File::where('parent_id', "=", $current_file->id)->get();
+        return Inertia::render('FileDirectories/Directory', ['path' => $path, 'directoryName' => $file_directory_name, 'files' => $children]);
     }
 
 

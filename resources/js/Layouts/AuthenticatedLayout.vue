@@ -19,7 +19,9 @@
                     >My Files</ResponsiveNavLink
                 >
                 <ResponsiveNavLink href="/">Shared Files</ResponsiveNavLink>
-                <ResponsiveNavLink href="/">Trash</ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('trash')"
+                    >Trash</ResponsiveNavLink
+                >
             </div>
         </div>
 

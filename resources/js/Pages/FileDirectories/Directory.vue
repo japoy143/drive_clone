@@ -1,14 +1,14 @@
 <template>
     <AuthenticatedLayout @click="closeHoverId">
         <div class="flex justify-between mb-6">
-            <h1 class="text-xl font-medium">{{ path }}</h1>
+            <h1 class="text-xl font-medium">{{ directoryName || path }}</h1>
 
             <div @click="onChangeListView">
                 <ListBulletIcon v-if="is_list_view" class="size-6" />
                 <Squares2X2Icon v-else class="size-6" />
             </div>
         </div>
-
+        <!-- Folders Container -->
         <div
             class="flex relative h-[48px]"
             :class="[
@@ -17,34 +17,60 @@
                     : 'flex-row flex-wrap gap-x-2',
             ]"
         >
-            <Link
-                v-for="file in files"
-                :key="file.id"
-                :href="route('directory', file.name)"
-                class="mt-2"
-            >
-                <div
-                    class="flex items-center h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
+            <!-- Folder Container -->
+            <div v-for="file in files" :key="file.id" class="mt-2">
+                <Link
+                    class="flex items-center justify-between h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
+                    :href="route('directory', file.path)"
                     @mouseover="onChangeHoverId($event, file.id)"
                 >
-                    <FolderIcon class="size-6" />
-                    <p>{{ file.name }}</p>
-                </div>
+                    <div class="flex space-x-2">
+                        <FolderIcon class="size-6" />
+                        <p>{{ file.name }}</p>
+                    </div>
+                    <div>
+                        <StarSolidIcon class="size-6" v-if="file.is_favorite" />
+                    </div>
+                </Link>
+                <!-- Floating Options -->
                 <div
                     v-if="hoverIdHolder === file.id"
                     :key="file.id"
-                    class="absolute w-[200px] px-4 py-2 space-y-2 bg-gray-100 z-100 shadow-md"
+                    class="absolute w-[200px] px-4 py-2 space-y-2 bg-gray-100 z-100 shadow-md cursor-pointer"
                     :class="[is_list_view ? 'left-52' : 'mt-2']"
                     :style="is_list_view ? { top: `${folderPosition}px` } : {}"
                 >
-                    <p class="hover:border-b-2">Rename</p>
-                    <p class="hover:border-b-2">Favorite</p>
+                    <p
+                        class="hover:border-b-2"
+                        @click="openModal(file.name, file.id)"
+                    >
+                        Rename
+                    </p>
+                    <Link
+                        method="patch"
+                        :href="route('favorite', file.id)"
+                        class="hover:border-b-2"
+                        >Favorite</Link
+                    >
                     <p class="hover:border-b-2">Share</p>
-                    <p class="hover:border-b-2">Delete</p>
+                    <Link
+                        method="delete"
+                        :href="route('delete.file', file.id)"
+                        class="hover:border-b-2"
+                    >
+                        Delete
+                    </Link>
                 </div>
-            </Link>
+            </div>
         </div>
     </AuthenticatedLayout>
+    <!-- Modal Here -->
+    <RenameModal
+        :isModalOpen="isModalOpen"
+        :closeModal="closeModal"
+        :fileName="fileName"
+        :fileId="fileId"
+    />
 </template>
 
 <script setup>
@@ -55,16 +81,29 @@ import {
 } from "@heroicons/vue/24/outline";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Link } from "@inertiajs/vue3";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue"; // ✅ Add missing imports
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { ref } from "vue";
+import RenameModal from "@/Components/app/RenameModal.vue";
+import { StarIcon as StarSolidIcon } from "@heroicons/vue/20/solid";
+
+//props
+
+defineProps({ path: String, directoryName: String, files: Object });
+
+//refs
 
 let is_list_view = ref(true);
 
 //mouser over id
 const hoverIdHolder = ref(null);
-
 //positions
 const folderPosition = ref(0);
+//modals refs
+const fileName = ref("");
+const fileId = ref("");
+const isModalOpen = ref(false);
+
+//methods
 
 const closeHoverId = () => {
     hoverIdHolder.value = null;
@@ -83,8 +122,13 @@ const onChangeListView = () => {
     console.log(is_list_view);
 };
 
-defineProps({
-    path: String,
-    files: Object,
-});
+const openModal = (name, id) => {
+    isModalOpen.value = !isModalOpen.value;
+    fileName.value = name;
+    fileId.value = id;
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+};
 </script>

@@ -26,22 +26,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
 
     Route::get('/sharedfiles', [SharedFileController::class, 'index'])->name('sharedfiles');
+
+    //trash
     Route::get('/trash', [TrashController::class, 'index'])->name('trash');
+    //restore trash
+    Route::post('/restore/{file}', [TrashController::class, 'restore'])->name('restore');
 
 });
 
 
 //TODO:create a Route group for crud files
 Route::post('/create-file', [FileController::class, 'saveFile'])->name('savefile');
-Route::get('/file/{path}', [MyFileController::class, 'directory'])->name('directory');
+Route::get('/directory/{path}', [MyFileController::class, 'rootToDirectory'])->name('root.directory');
+Route::get('/file/{path}', [MyFileController::class, 'directory'])->where('path', '.*')->name('directory');
 
 
 //rename
 Route::patch('/rename/{file}', [MyFileController::class, 'rename'])->name('rename');
-//trash
-Route::delete('/delete/{file}', [MyFileController::class, 'destroy'])->name('trash');
+//delete file
+Route::delete('/delete/{file}', [MyFileController::class, 'destroy'])->name('delete.file');
 //favorite
 Route::patch('/favorite/{file}', [MyFileController::class, 'favorite'])->name('favorite');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
