@@ -49,6 +49,10 @@ Route::delete('/delete/{file}', [MyFileController::class, 'destroy'])->name('del
 Route::patch('/favorite/{file}', [MyFileController::class, 'favorite'])->name('favorite');
 
 
+//get all users api
+Route::get('/users/api', [MyFileController::class, 'getUserApi'])->name('user.api');
+Route::get('/search/user/api', [MyFileController::class, 'searchUserApi'])->name('search.user');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -98,6 +98,8 @@ import { ref } from "vue";
 import RenameModal from "@/Components/app/RenameModal.vue";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/20/solid";
 import ShareUrlLinkModal from "@/Components/app/ShareUrlLinkModal.vue";
+import { useToast } from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
 
 //props
 
@@ -118,6 +120,9 @@ const isModalOpen = ref(false);
 //share url modal
 const isShareUrlModal = ref(false);
 const urlLink = ref("");
+
+//toast
+const toast = useToast();
 
 //methods
 
@@ -156,5 +161,8 @@ const openShareUrlModal = (url) => {
 
 const closeShareUrlModal = () => {
     isShareUrlModal.value = false;
+    toast.success("copy link to clipboard", {
+        position: "top-right",
+    });
 };
 </script>

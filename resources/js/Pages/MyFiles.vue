@@ -79,6 +79,7 @@
             :isModalOpen="isShareUrlModal"
             :closeModal="closeShareUrlModal"
             :urlLink="urlLink"
+            :error="errorToast"
         />
     </AuthenticatedLayout>
 </template>
@@ -96,9 +97,11 @@ import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
 import RenameModal from "@/Components/app/RenameModal.vue";
 import ShareUrlLinkModal from "@/Components/app/ShareUrlLinkModal.vue";
+import { useToast } from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
 
 //props
-defineProps({
+const props = defineProps({
     files: Object,
 });
 
@@ -117,6 +120,9 @@ const isModalOpen = ref(false);
 //share url modal
 const isShareUrlModal = ref(false);
 const urlLink = ref("");
+
+//toast
+const toast = useToast();
 
 //methods
 
@@ -155,5 +161,14 @@ const openShareUrlModal = (url) => {
 
 const closeShareUrlModal = () => {
     isShareUrlModal.value = false;
+    toast.success("copy link to clipboard", {
+        position: "top-right",
+    });
+};
+
+const errorToast = () => {
+    toast.error("Error endpoint api", {
+        position: "top-right",
+    });
 };
 </script>

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
+use function Pest\Laravel\json;
 
 class MyFileController extends Controller
 {
@@ -14,7 +17,8 @@ class MyFileController extends Controller
     public function index()
     {
         return Inertia::render('MyFiles', [
-            'files' => File::where('parent_id', '=', null)->get(),
+            'files' => File::where('parent_id', '=', null)->get()
+
         ]);
     }
 
@@ -37,6 +41,22 @@ class MyFileController extends Controller
         return Inertia::render('FileDirectories/Directory', ['path' => $path, 'directoryName' => $file_directory_name, 'files' => $children]);
     }
 
+
+    public function getUserApi()
+    {
+        $all_users = User::paginate(4);
+        return response()->json($all_users);
+    }
+
+    public function searchUserApi(Request $request)
+    {
+        $query = $request->input('query'); // Get the search input
+
+        $users = User::where('name', 'like', "%{$query}%") // Search in the 'name' column
+            ->get(); // Fetch results
+
+        return response()->json($users); // Return JSON response
+    }
 
     public function rename(Request $request, File $file)
     {
