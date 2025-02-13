@@ -26,7 +26,7 @@
         </form>
         <!-- Share to input -->
         <form
-            @submit.prevent="isShareToOpen"
+            @submit.prevent="saveSample"
             v-if="isShareToOpen"
             class="w-full px-2 py-2"
         >
@@ -39,7 +39,7 @@
             />
             <div class="mt-2 flex justify-end">
                 <button
-                    type="submit"
+                    @click="shareToUserLink(search, file_id)"
                     class="inline-flex justify-center rounded-md border border-transparent bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/70"
                 >
                     Share
@@ -49,16 +49,16 @@
                 v-for="user in all_user"
                 :key="user.id"
                 class="w-full p-2 border-2 border-black mt-1 rounded-sm"
-                @click="selectUser(user.name)"
+                @click="selectUser(user.email)"
             >
-                <p>{{ user.name }}</p>
+                <p>{{ user.email }}</p>
             </div>
         </form>
     </Modal>
 </template>
 
 <script setup>
-import { router, useForm } from "@inertiajs/vue3";
+import { router, useForm, usePage } from "@inertiajs/vue3";
 import Modal from "../Modal.vue";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { throttle } from "lodash";
@@ -69,6 +69,10 @@ const props = defineProps({
     isModalOpen: Boolean,
     closeModal: Function,
     urlLink: String,
+    file_id: {
+        type: String,
+        default: "",
+    },
     error: Function,
 });
 
@@ -141,6 +145,18 @@ const selectUser = (val) => {
     search.value = val;
 };
 
+const saveSample = () => {};
+
+const shareToUserLink = async (email, id) => {
+    try {
+        const res = await axios.post(`/shared/file/${email}/${id}`);
+        console.log(res.data);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        copyUrlToClipboard();
+    }
+};
 // const filteredUsers = computed(() => {
 //     return props.searchUser.filter((user) =>
 //         user.name.toLowerCase().includes(search.value.toLowerCase())

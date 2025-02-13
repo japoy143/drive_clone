@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use PhpParser\Node\Stmt\TryCatch;
 
 class SharedFileController extends Controller
 {
@@ -15,6 +18,21 @@ class SharedFileController extends Controller
         return Inertia::render('SharedFiles');
     }
 
+
+    public function sharedFile($email, $id)
+    {
+        $user = User::where('email', $email)->first();
+        $file = File::findOrFail($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Attach user ID to the file
+        $file->users()->attach($user->id);
+
+        return response()->json(['message' => 'File shared successfully'], 200);
+    }
     /**
      * Show the form for creating a new resource.
      */

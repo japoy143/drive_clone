@@ -51,7 +51,7 @@
                         >Favorite</Link
                     >
                     <p
-                        @click="openShareUrlModal(file.path)"
+                        @click="openShareUrlModal(file.path, file.id)"
                         class="hover:border-b-2"
                     >
                         Share
@@ -80,6 +80,7 @@
             :closeModal="closeShareUrlModal"
             :urlLink="urlLink"
             :error="errorToast"
+            :file_id="file_id"
         />
     </AuthenticatedLayout>
 </template>
@@ -120,6 +121,7 @@ const isModalOpen = ref(false);
 //share url modal
 const isShareUrlModal = ref(false);
 const urlLink = ref("");
+const file_id = ref("");
 
 //toast
 const toast = useToast();
@@ -154,9 +156,10 @@ const closeModal = () => {
 };
 
 //shareUrl Modal Methods
-const openShareUrlModal = (url) => {
+const openShareUrlModal = (url, id) => {
     isShareUrlModal.value = true;
     urlLink.value = url;
+    file_id.value = id;
 };
 
 const closeShareUrlModal = () => {

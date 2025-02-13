@@ -11,4 +11,9 @@ class File extends Model
 {
     use HasFactory, NodeTrait, SoftDeletes;
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
 }
