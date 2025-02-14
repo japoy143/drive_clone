@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->foreignIdFor(User::class, 'created_by');
             $table->foreignIdFor(User::class, 'updated_by');
+            $table->boolean('is_shared')->default(0);
             $table->softDeletes();
         });
     }

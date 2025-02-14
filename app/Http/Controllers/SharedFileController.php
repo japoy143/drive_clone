@@ -15,7 +15,9 @@ class SharedFileController extends Controller
      */
     public function index()
     {
-        return Inertia::render('SharedFiles');
+        $files = File::where('is_shared', '=', 1)->get();
+
+        return Inertia::render('SharedFiles', ['files' => $files]);
     }
 
 
@@ -24,12 +26,14 @@ class SharedFileController extends Controller
         $user = User::where('email', $email)->first();
         $file = File::findOrFail($id);
 
+
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
         // Attach user ID to the file
         $file->users()->attach($user->id);
+        $file->update(['is_shared' => 1]);
 
         return response()->json(['message' => 'File shared successfully'], 200);
     }

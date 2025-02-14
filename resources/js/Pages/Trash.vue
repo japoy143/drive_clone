@@ -20,7 +20,6 @@
             <div v-for="file in trash_files" :key="file.id" class="mt-2">
                 <Link
                     class="flex items-center justify-between h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
-                    :href="route('directory', file.path)"
                     @mouseover="onChangeHoverId($event, file.id)"
                 >
                     <div class="flex space-x-2">
