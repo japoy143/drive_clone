@@ -77,10 +77,6 @@ let is_list_view = ref(true);
 const hoverIdHolder = ref(null);
 //positions
 const folderPosition = ref(0);
-//modals refs
-const fileName = ref("");
-const fileId = ref("");
-const isModalOpen = ref(false);
 
 //methods
 const onChangeHoverId = (event, id) => {
@@ -94,12 +90,6 @@ const onChangeHoverId = (event, id) => {
 const onChangeListView = () => {
     is_list_view.value = !is_list_view.value;
     console.log(is_list_view);
-};
-
-const openModal = (name, id) => {
-    isModalOpen.value = !isModalOpen.value;
-    fileName.value = name;
-    fileId.value = id;
 };
 
 const closeHoverId = () => {

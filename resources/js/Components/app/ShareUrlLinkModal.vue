@@ -150,6 +150,7 @@ const saveSample = () => {};
 const shareToUserLink = async (email, id) => {
     try {
         const res = await axios.post(`/shared/file/${email}/${id}`);
+        search.value = "";
         console.log(res.data);
     } catch (error) {
         console.log(error);

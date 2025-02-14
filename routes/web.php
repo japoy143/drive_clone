@@ -56,6 +56,8 @@ Route::get('/search/user/api', [MyFileController::class, 'searchUserApi'])->name
 
 //shared file api
 Route::post('/shared/file/{email}/{id}', [SharedFileController::class, 'sharedFile'])->name('share.file');
+//unshare file
+Route::post('/unshare/file/{file}', [SharedFileController::class, 'unshareFile'])->name('unshare.file');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

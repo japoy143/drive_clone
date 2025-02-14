@@ -37,6 +37,15 @@ class SharedFileController extends Controller
 
         return response()->json(['message' => 'File shared successfully'], 200);
     }
+
+
+    public function unshareFile(File $file)
+    {
+        $file->users()->detach();
+        $file->update(['is_shared' => 0]);
+
+        return redirect()->back()->with('status', 'success');
+    }
     /**
      * Show the form for creating a new resource.
      */
