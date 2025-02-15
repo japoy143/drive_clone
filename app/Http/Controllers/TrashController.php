@@ -11,11 +11,12 @@ class TrashController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $all_trash = File::onlyTrashed()->get();
         return Inertia::render('Trash', [
-            'trash_files' => $all_trash
+            'trash_files' => File::when($request->search, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            })->onlyTrashed()->get()
         ]);
     }
 

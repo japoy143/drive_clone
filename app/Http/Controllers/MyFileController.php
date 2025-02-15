@@ -14,21 +14,32 @@ class MyFileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('MyFiles', [
-            'files' => File::where('parent_id', '=', null)->get()
+            'files' => File::when($request->search, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            })->where('parent_id', '=', null)->get(),
 
+            'searchTerm' => $request->search
         ]);
     }
+
 
 
     public function rootToDirectory(Request $request)
     {
         $path = $request->path;
         $current_file = File::where('name', '=', $path)->first();
-        $children = File::where('parent_id', "=", $current_file->id)->get();
-        return Inertia::render('FileDirectories/Directory', ['path' => $path, 'files' => $children]);
+        return Inertia::render(
+            'FileDirectories/Directory',
+            [
+                'path' => $path,
+                'files' => File::when($request->search, function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->search . '%');
+                })->where('parent_id', '=', $current_file->id)->get()
+            ]
+        );
     }
 
     public function directory(Request $request)

@@ -44,4 +44,17 @@ class FileController extends Controller
 
 
     }
+
+    //upload file
+
+    public function uploadFile(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $fileName = $request->file('file')->getClientOriginalName();
+            $request->file('file')->store('uploads', [
+                'disk' => 's3',
+                "visibility" => 'public',
+            ]);
+        }
+    }
 }

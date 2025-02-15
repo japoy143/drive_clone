@@ -38,6 +38,12 @@
             :url="url"
             :closeModal="closeModal"
         />
+        <!-- Upload File Modal -->
+        <uploadFileModal
+            :isModalOpen="isUploadFileModalOpen"
+            :openToCreateActions="openUploadFileModal"
+            :closeModal="closeUploadFileModal"
+        />
     </div>
 </template>
 
@@ -48,15 +54,25 @@ import CreateFolderDropdown from "../Components/app/CreateFolderDropdown.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import Navigation from "../Components/app/Navigation.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
+import uploadFileModal from "@/Components/app/uploadFileModal.vue";
 //ignore
 import SaveModal from "@/Components/app/ModalSave.vue";
 
 const url = decodeURIComponent(usePage().url);
 
 const isModalOpen = ref(false);
+const isUploadFileModalOpen = ref(false);
 
 const openToCreateNewFolderModal = () => {
     isModalOpen.value = !isModalOpen.value;
+};
+
+const openUploadFileModal = () => {
+    isUploadFileModalOpen.value = true;
+};
+
+const closeUploadFileModal = () => {
+    isUploadFileModalOpen.value = false;
 };
 
 const closeModal = () => {
@@ -80,9 +96,7 @@ const dropDownItems = [
     {
         name: "Upload File",
         active: false,
-        action: () => {
-            console.log("Upload File");
-        },
+        action: openUploadFileModal,
     },
 ];
 </script>

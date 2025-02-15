@@ -39,7 +39,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::post('/create-file', [FileController::class, 'saveFile'])->name('savefile');
 Route::get('/directory/{path}', [MyFileController::class, 'rootToDirectory'])->name('root.directory');
 Route::get('/file/{path}', [MyFileController::class, 'directory'])->where('path', '.*')->name('directory');
-
+//upload file
+Route::post('/upload/file', [FileController::class, 'uploadFile'])->name('upload.file');
 
 //rename
 Route::patch('/rename/{file}', [MyFileController::class, 'rename'])->name('rename');
@@ -58,6 +59,8 @@ Route::get('/search/user/api', [MyFileController::class, 'searchUserApi'])->name
 Route::post('/shared/file/{email}/{id}', [SharedFileController::class, 'sharedFile'])->name('share.file');
 //unshare file
 Route::post('/unshare/file/{file}', [SharedFileController::class, 'unshareFile'])->name('unshare.file');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

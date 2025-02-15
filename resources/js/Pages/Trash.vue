@@ -1,7 +1,7 @@
 <template>
     <AuthenticatedLayout @click="closeHoverId">
         <div class="flex justify-between mb-6">
-            <h1 class="text-xl font-medium">{{ Trash }}</h1>
+            <h1 class="text-xl font-medium">Trash</h1>
 
             <div @click="onChangeListView">
                 <ListBulletIcon v-if="is_list_view" class="size-6" />

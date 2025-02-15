@@ -13,11 +13,13 @@ class SharedFileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $files = File::where('is_shared', '=', 1)->get();
-
-        return Inertia::render('SharedFiles', ['files' => $files]);
+        return Inertia::render('SharedFiles', [
+            'files' => File::when($request->search, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            })->where('is_shared', '=', 1)->get()
+        ]);
     }
 
 
