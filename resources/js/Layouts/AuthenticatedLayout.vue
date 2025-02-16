@@ -27,9 +27,21 @@
             </div>
         </div>
 
-        <main class="flex-1">
+        <main
+            @drop.prevent="handleDrop"
+            @dragover.prevent="onDragOver"
+            @dragleave.prevent="onDragLeave"
+            class="flex-1"
+        >
             <Navigation />
-            <slot />
+            <div
+                v-if="dragOver"
+                class="flex flex-col justify-center items-center h-full border-dashed border-black border-2"
+            >
+                <h1 class="text-3xl mb-4 font-medium">Drag files here</h1>
+                <DocumentIcon class="size-20" />
+            </div>
+            <slot v-else />
         </main>
         <!-- Modal Here -->
         <SaveModal
@@ -48,20 +60,32 @@
 </template>
 
 <script setup>
-import { nextTick, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import CreateFolderDropdown from "../Components/app/CreateFolderDropdown.vue";
-import { FolderIcon } from "@heroicons/vue/24/outline";
+import { FolderIcon, DocumentIcon } from "@heroicons/vue/24/outline";
 import Navigation from "../Components/app/Navigation.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 import uploadFileModal from "@/Components/app/uploadFileModal.vue";
+
 //ignore
 import SaveModal from "@/Components/app/ModalSave.vue";
+import { emitter, FILE_UPLOAD_STARTED } from "@/event-bus";
 
 const url = decodeURIComponent(usePage().url);
 
 const isModalOpen = ref(false);
 const isUploadFileModalOpen = ref(false);
+
+const fileUploadForm = useForm({
+    files: [],
+    path: url,
+});
+
+const page = usePage();
+
+//drag drop
+const dragOver = ref(false);
 
 const openToCreateNewFolderModal = () => {
     isModalOpen.value = !isModalOpen.value;
@@ -99,4 +123,29 @@ const dropDownItems = [
         action: openUploadFileModal,
     },
 ];
+
+const uploadFiles = (files) => {
+    fileUploadForm.files = files;
+
+    fileUploadForm.post(route("upload.file"));
+};
+
+function onDragOver() {
+    dragOver.value = true;
+}
+
+function onDragLeave() {}
+const handleDrop = (event) => {
+    dragOver.value = false;
+    const files = event.dataTransfer.files;
+    if (!files.length) {
+        return;
+    }
+
+    uploadFiles(files);
+};
+
+onMounted(() => {
+    emitter.on(FILE_UPLOAD_STARTED, uploadFiles);
+});
 </script>

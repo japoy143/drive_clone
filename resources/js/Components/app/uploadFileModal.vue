@@ -1,7 +1,16 @@
 <template>
     <Modal :show="isModalOpen" maxWidth="md">
-        <form class="px-4 py-4 flex flex-col" @submit.prevent="uploadFile">
-            <input type="file" @input="form.file = $event.target.files[0]" />
+        <form
+            class="px-4 py-4 flex flex-col"
+            @submit.prevent="uploadFile"
+            enctype="multipart/form-data"
+        >
+            <input
+                @change="onChange"
+                type="file"
+                @input="form.file = $event.target.files"
+                multiple
+            />
             <div class="mt-2 flex justify-end space-x-2">
                 <button
                     type="button"
@@ -25,6 +34,7 @@
 import { useForm } from "@inertiajs/vue3";
 import Modal from "../Modal.vue";
 import { nextTick, ref, watch } from "vue";
+import { emitter, FILE_UPLOAD_STARTED } from "@/event-bus";
 
 // ✅ Make folderInput a local ref (not a prop)
 const folderInput = ref(null);
@@ -63,4 +73,8 @@ watch(
         }
     }
 );
+
+const onChange = (event) => {
+    emitter.emit(FILE_UPLOAD_STARTED, event.target.files);
+};
 </script>

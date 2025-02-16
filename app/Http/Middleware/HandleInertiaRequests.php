@@ -38,6 +38,11 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn() => $request->session()->get('status')
             ],
+
+
+            'file' => [
+                'id' => fn() => $request->session()->get('file_id')
+            ]
         ];
     }
 }

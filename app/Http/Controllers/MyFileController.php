@@ -37,7 +37,9 @@ class MyFileController extends Controller
                 'path' => $path,
                 'files' => File::when($request->search, function ($query) use ($request) {
                     $query->where('name', 'like', '%' . $request->search . '%');
-                })->where('parent_id', '=', $current_file->id)->get()
+                })->where('parent_id', '=', $current_file->id)->get(),
+
+
             ]
         );
     }
