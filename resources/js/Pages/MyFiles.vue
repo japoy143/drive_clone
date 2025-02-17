@@ -31,6 +31,16 @@
                         <StarSolidIcon class="size-6" v-if="file.is_favorite" />
                     </div>
                 </Link>
+                <!-- if file, file container -->
+                <div
+                    v-else
+                    @mouseover="onChangeHoverId($event, file.id)"
+                    class="flex gap-2"
+                >
+                    <PhotoIcon v-if="hasImage(file.mime)" class="size-6" />
+                    <DocumentTextIcon v-else class="size-6" />
+                    <p>{{ limitedLetters(file.name, file.mime, file.id) }}</p>
+                </div>
                 <!-- Floating Options -->
                 <div
                     v-if="hoverIdHolder === file.id"
@@ -92,6 +102,8 @@ import {
     Squares2X2Icon,
     FolderIcon,
     StarIcon,
+    PhotoIcon,
+    DocumentTextIcon,
 } from "@heroicons/vue/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/20/solid";
 import AuthenticatedLayout from "../Layouts/AuthenticatedLayout.vue";
@@ -118,6 +130,9 @@ const folderPosition = ref(0);
 const fileName = ref("");
 const fileId = ref("");
 const isModalOpen = ref(false);
+
+//extension type
+const images = ["png", "jpg", "jpeg", "svg", "gif", "webp"];
 
 //share url modal
 const isShareUrlModal = ref(false);
@@ -174,5 +189,26 @@ const errorToast = () => {
     toast.error("Error endpoint api", {
         position: "top-right",
     });
+};
+
+const hasImage = (image) => {
+    return images
+        .map((item) => item.toLowerCase())
+        .includes(image.toLowerCase());
+};
+
+const limitedLetters = (words, extension, id) => {
+    const letterCount = 10;
+    const splittedWords = words.split("");
+    let joinWord = "";
+    for (let i = 0; i < letterCount; i++) {
+        joinWord += splittedWords[i];
+    }
+
+    joinWord += id;
+    joinWord += ".";
+    joinWord += extension;
+
+    return joinWord;
 };
 </script>

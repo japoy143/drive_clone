@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('path')->nullable();
+            $table->string('mime')->nullable();
             $table->nestedSet();
             $table->boolean('is_folder');
             $table->integer('size')->nullable();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FileRequest;
+use App\Jobs\UploadFileJob;
 use App\Models\File;
 
 use Illuminate\Http\Request;
@@ -48,23 +49,24 @@ class FileController extends Controller
     }
 
     //upload file
-
     public function uploadFile(Request $request)
     {
         $path = explode('/', $request->path);
-        $current_path = array_slice($path, 2);
-        $final_path = join("/", $current_path);
+
 
         $last_object = end($path);
         $path_length = count($path);
 
         foreach ($request->file('files') as $key => $item) {
             $file_name = $item->getClientOriginalName();
+            $mime = $item->getClientOriginalExtension();
+
             $file = File::create([
-                'name' => $file_name,
+                'name' => time(),
                 'is_folder' => 0,
                 'created_by' => Auth::id(),
                 'updated_by' => Auth::id(),
+                'mime' => $mime,
 
             ]);
 
@@ -86,4 +88,5 @@ class FileController extends Controller
             }
         }
     }
+
 }

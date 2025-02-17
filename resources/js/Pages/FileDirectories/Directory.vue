@@ -20,6 +20,7 @@
             <!-- Folder Container -->
             <div v-for="file in files" :key="file.id" class="mt-2">
                 <Link
+                    v-if="file.is_folder"
                     class="flex items-center justify-between h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
                     :href="route('directory', file.path)"
                     @mouseover="onChangeHoverId($event, file.id)"
@@ -32,6 +33,16 @@
                         <StarSolidIcon class="size-6" v-if="file.is_favorite" />
                     </div>
                 </Link>
+                <!-- if file, file container -->
+                <div
+                    v-else
+                    @mouseover="onChangeHoverId($event, file.id)"
+                    class="flex gap-2"
+                >
+                    <PhotoIcon v-if="hasImage(file.mime)" class="size-6" />
+                    <DocumentTextIcon v-else class="size-6" />
+                    <p>{{ limitedLetters(file.name, file.mime, file.id) }}</p>
+                </div>
                 <!-- Floating Options -->
                 <div
                     v-if="hoverIdHolder === file.id"
@@ -91,6 +102,8 @@ import {
     ListBulletIcon,
     Squares2X2Icon,
     FolderIcon,
+    PhotoIcon,
+    DocumentTextIcon,
 } from "@heroicons/vue/24/outline";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Link } from "@inertiajs/vue3";
@@ -122,6 +135,9 @@ const isModalOpen = ref(false);
 const isShareUrlModal = ref(false);
 const urlLink = ref("");
 const file_id = ref("");
+
+//extension type
+const images = ["png", "jpg", "jpeg", "svg", "gif", "webp"];
 
 //toast
 const toast = useToast();
@@ -167,5 +183,25 @@ const closeShareUrlModal = () => {
     toast.success("copy link to clipboard", {
         position: "top-right",
     });
+};
+
+const hasImage = (image) => {
+    return images
+        .map((item) => item.toLowerCase())
+        .includes(image.toLowerCase());
+};
+
+const limitedLetters = (words, extension, id) => {
+    const letterCount = 10;
+    const splittedWords = words.split("");
+    let joinWord = "";
+    for (let i = 0; i < letterCount; i++) {
+        joinWord += splittedWords[i];
+    }
+    joinWord += id;
+    joinWord += ".";
+    joinWord += extension;
+
+    return joinWord;
 };
 </script>

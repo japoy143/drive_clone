@@ -42,6 +42,7 @@
                 <DocumentIcon class="size-20" />
             </div>
             <slot v-else />
+            <loading :active="isLoading" :is-full-page="true"></loading>
         </main>
         <!-- Modal Here -->
         <SaveModal
@@ -60,6 +61,8 @@
 </template>
 
 <script setup>
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/css/index.css";
 import { nextTick, onMounted, ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import CreateFolderDropdown from "../Components/app/CreateFolderDropdown.vue";
@@ -76,6 +79,7 @@ const url = decodeURIComponent(usePage().url);
 
 const isModalOpen = ref(false);
 const isUploadFileModalOpen = ref(false);
+const isLoading = ref(false);
 
 const fileUploadForm = useForm({
     files: [],
@@ -126,8 +130,13 @@ const dropDownItems = [
 
 const uploadFiles = (files) => {
     fileUploadForm.files = files;
-
-    fileUploadForm.post(route("upload.file"));
+    isLoading.value = true;
+    fileUploadForm.post(route("upload.file"), {
+        onSuccess: () => {
+            isLoading.value = false;
+        },
+        preserveState: true,
+    });
 };
 
 function onDragOver() {
