@@ -180,9 +180,6 @@ const openShareUrlModal = (url, id) => {
 
 const closeShareUrlModal = () => {
     isShareUrlModal.value = false;
-    toast.success("copy link to clipboard", {
-        position: "top-right",
-    });
 };
 
 const errorToast = () => {

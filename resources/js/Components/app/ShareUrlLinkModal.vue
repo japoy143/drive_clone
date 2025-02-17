@@ -40,6 +40,7 @@
             <div class="mt-2 flex justify-end">
                 <button
                     @click="shareToUserLink(search, file_id)"
+                    :class="search !== '' ? 'bg-black' : 'bg-gray-400'"
                     class="inline-flex justify-center rounded-md border border-transparent bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/70"
                 >
                     Share
@@ -64,6 +65,7 @@ import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { throttle } from "lodash";
 import { debounce } from "lodash";
 import axios from "axios";
+import { useToast } from "vue-toast-notification";
 
 const props = defineProps({
     isModalOpen: Boolean,
@@ -100,6 +102,8 @@ const shareInputFocus = ref(null);
 const search = ref("");
 
 const urlValue = ref("");
+
+const toast = useToast();
 
 const copyUrlToClipboard = () => {
     try {
@@ -148,14 +152,20 @@ const selectUser = (val) => {
 const saveSample = () => {};
 
 const shareToUserLink = async (email, id) => {
+    if (email === "") {
+        toast.error("No Selected User", { position: "top-right" });
+        props.closeModal();
+        return;
+    }
     try {
         const res = await axios.post(`/shared/file/${email}/${id}`);
         search.value = "";
-        console.log(res.data);
+        copyUrlToClipboard();
+        toast.success("copy link to clipboard", {
+            position: "top-right",
+        });
     } catch (error) {
         console.log(error);
-    } finally {
-        copyUrlToClipboard();
     }
 };
 // const filteredUsers = computed(() => {
