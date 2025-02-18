@@ -40,6 +40,9 @@
                     <PhotoIcon v-if="hasImage(file.mime)" class="size-6" />
                     <DocumentTextIcon v-else class="size-6" />
                     <p>{{ limitedLetters(file.name, file.mime, file.id) }}</p>
+                    <div>
+                        <StarSolidIcon class="size-4" v-if="file.is_favorite" />
+                    </div>
                 </div>
                 <!-- Floating Options -->
                 <div

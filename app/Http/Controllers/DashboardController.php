@@ -10,10 +10,14 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        $search = $request->input('search'); // Get search term
+
         return Inertia::render('Dashboard', [
-            'files' => File::when($request->search, function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->search . '%');
-            })->latest()->take(3)->get()
+            'files' => File::when(!empty($search), function ($query) use ($search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })->latest()->take(3)->get(),
+
+            'favorites' => File::where('is_favorite', 1)->get()
         ]);
     }
 }
