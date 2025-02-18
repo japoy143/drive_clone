@@ -1,5 +1,7 @@
 <template>
-    <nav class="w-full flex items-center justify-between relative mb-2">
+    <nav
+        class="w-full flex items-center gap-4 lg:px-0 lg:gap-0 justify-between relative mb-2"
+    >
         <SearchForm />
         <UserSettings />
     </nav>

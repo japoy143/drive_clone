@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-row gap-4 h-screen w-full p-4">
+    <div class="flex flex-row gap-4 h-screen w-screen p-4">
         <!-- Side Navigation -->
-        <div class="w-[200px]">
+        <div class="w-[100px] md:w-[200px]">
             <Link
                 :href="route('dashboard')"
                 class="flex items-center gap-2 font-medium"
@@ -12,6 +12,7 @@
             <div class="mt-4 space-y-2 flex flex-col">
                 <CreateFolderDropdown
                     dropDownName="Create Folder"
+                    s
                     :menuItems="dropDownItems"
                 />
                 <ResponsiveNavLink :href="route('dashboard')"

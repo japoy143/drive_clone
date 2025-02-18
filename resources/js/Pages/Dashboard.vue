@@ -6,32 +6,32 @@
             <h1 class="text-xl font-medium">Dashboard</h1>
             <!-- Recently added -->
             <div class="mt-6">
-                <div class="flex justify-between">
+                <div class="flex justify-between text-sm md:text-base">
                     <h2>Recently added</h2>
                     <Link :href="route('myfiles')" class="underline"
                         >See More</Link
                     >
                 </div>
                 <!-- Recently files container -->
-                <div class="grid grid-cols-3 gap-2 lg:gap-16">
+                <div class="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-16">
                     <div
                         v-for="file in files"
                         :key="file.id"
                         class="col-span-1 p-2"
                     >
                         <div
-                            class="bg-slate-50 h-[140px] rounded-md flex flex-col items-center justify-center"
+                            class="h-[60px] bg-slate-50 md:h-[140px] rounded-md flex flex-col items-center justify-center"
                         >
                             <PhotoIcon
                                 v-if="hasImage(file.mime)"
-                                class="size-28 text-gray-500"
+                                class="size-8 md:size-28 text-gray-500"
                             />
                             <DocumentTextIcon
                                 v-else
-                                class="size-28 text-gray-500"
+                                class="size-8 md:size-28 text-gray-500"
                             />
                         </div>
-                        <p>
+                        <p class="text-xs md:text-base">
                             {{ limitedLetters(file.name, file.mime, file.id) }}
                         </p>
                     </div>
@@ -39,7 +39,6 @@
             </div>
             <!-- Favorites  -->
 
-            <!-- Favorites expands to take the remaining space -->
             <!-- Favorites expands to take the remaining space -->
             <div
                 class="flex-1 bg-white h-full p-4 rounded-md shadow-md overflow-hidden flex flex-col"
@@ -49,7 +48,7 @@
                 <!-- Scrollable Table Container -->
                 <div class="flex-1 overflow-auto">
                     <table
-                        class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700"
+                        class="hidden md:table text-xs md:text-base min-w-full divide-y divide-gray-200 dark:divide-neutral-700"
                     >
                         <thead>
                             <tr>
@@ -104,6 +103,19 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- only show when mobile -->
+                    <div
+                        v-for="item in favorites"
+                        :key="item.id"
+                        class="md:hidden mt-1"
+                    >
+                        <div
+                            class="flex border border-black rounded-sm border-solid"
+                        >
+                            <p>{{ item.name }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

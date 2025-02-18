@@ -65,8 +65,10 @@ function handleImageError() {
             </div>
         </nav>
 
+        <!-- Hero Section -->
         <div class="flex-1 grid grid-cols-2 px-10">
-            <div class="flex flex-col font-medium pt-32 px-20">
+            <!-- First Section -->
+            <div class="flex flex-col font-medium pt-32 lg:px-20">
                 <div>
                     <h1 class="text-4xl mb-2 font-bold">
                         Where Your Files Feel at Home
@@ -105,7 +107,10 @@ function handleImageError() {
                     <div class="col-span-2"></div>
                 </div>
             </div>
-            <div class="p-6">
+            <!-- Second Section -->
+            <div
+                class="h-full flex flex-col items-center justify-center lg:block lg:p-6"
+            >
                 <img :src="DatabaseImage" alt="" />
             </div>
         </div>

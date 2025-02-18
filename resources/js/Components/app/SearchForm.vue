@@ -1,5 +1,7 @@
 <template>
-    <form class="w-[300px] absolute left-1/2 transform -translate-x-1/2">
+    <form
+        class="w-[100px] md:w-[300px] absolute lg:left-1/2 lg:transform lg:-translate-x-1/2"
+    >
         <input
             type="text"
             class="py-3 px-4 block w-full rounded-lg text-sm focus:border-white focus:ring-gray-200 disabled:opacity-50 disabled:pointer-events-none"
