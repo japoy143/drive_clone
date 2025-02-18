@@ -19,6 +19,7 @@
             <!-- Folder Container -->
             <div v-for="file in trash_files" :key="file.id" class="mt-2">
                 <Link
+                    v-if="file.is_folder"
                     class="flex items-center justify-between h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
                     @mouseover="onChangeHoverId($event, file.id)"
                 >
@@ -30,6 +31,16 @@
                         <StarSolidIcon class="size-6" v-if="file.is_favorite" />
                     </div>
                 </Link>
+                <!-- if file, file container -->
+                <div
+                    v-else
+                    @mouseover="onChangeHoverId($event, file.id)"
+                    class="flex gap-2"
+                >
+                    <PhotoIcon v-if="hasImage(file.mime)" class="size-6" />
+                    <DocumentTextIcon v-else class="size-6" />
+                    <p>{{ limitedLetters(file.name, file.mime, file.id) }}</p>
+                </div>
                 <!-- Floating Options -->
                 <div
                     v-if="hoverIdHolder === file.id"
@@ -57,6 +68,7 @@ import {
     ListBulletIcon,
     Squares2X2Icon,
     FolderIcon,
+    PhotoIcon,
 } from "@heroicons/vue/24/outline";
 
 import { Link } from "@inertiajs/vue3";
@@ -77,6 +89,8 @@ let is_list_view = ref(true);
 const hoverIdHolder = ref(null);
 //positions
 const folderPosition = ref(0);
+//extension type
+const images = ["png", "jpg", "jpeg", "svg", "gif", "webp"];
 
 //methods
 const onChangeHoverId = (event, id) => {
@@ -94,5 +108,26 @@ const onChangeListView = () => {
 
 const closeHoverId = () => {
     hoverIdHolder.value = null;
+};
+
+const hasImage = (image) => {
+    return images
+        .map((item) => item.toLowerCase())
+        .includes(image.toLowerCase());
+};
+
+const limitedLetters = (words, extension, id) => {
+    const letterCount = 15;
+    const splittedWords = words.split("");
+    let joinWord = "";
+    for (let i = 0; i < letterCount; i++) {
+        joinWord += splittedWords[i];
+    }
+
+    joinWord += id;
+    joinWord += ".";
+    joinWord += extension;
+
+    return joinWord;
 };
 </script>

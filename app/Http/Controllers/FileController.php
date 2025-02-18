@@ -62,7 +62,7 @@ class FileController extends Controller
             $mime = $item->getClientOriginalExtension();
 
             $file = File::create([
-                'name' => time(),
+                'name' => $file_name,
                 'is_folder' => 0,
                 'created_by' => Auth::id(),
                 'updated_by' => Auth::id(),

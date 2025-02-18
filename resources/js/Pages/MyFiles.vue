@@ -195,17 +195,25 @@ const hasImage = (image) => {
 };
 
 const limitedLetters = (words, extension, id) => {
-    const letterCount = 10;
+    const letterCount = 15;
     const splittedWords = words.split("");
     let joinWord = "";
-    for (let i = 0; i < letterCount; i++) {
-        joinWord += splittedWords[i];
+    if (splittedWords.length >= 15) {
+        for (let i = 0; i < letterCount; i++) {
+            joinWord += splittedWords[i];
+        }
+
+        joinWord += id;
+        joinWord += ".";
+        joinWord += extension;
+
+        return joinWord;
+    } else {
+        joinWord += words;
+        joinWord += ".";
+        joinWord += extension;
+
+        return joinWord;
     }
-
-    joinWord += id;
-    joinWord += ".";
-    joinWord += extension;
-
-    return joinWord;
 };
 </script>

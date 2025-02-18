@@ -14,7 +14,9 @@
                     dropDownName="Create Folder"
                     :menuItems="dropDownItems"
                 />
-
+                <ResponsiveNavLink :href="route('dashboard')"
+                    >Dashboard</ResponsiveNavLink
+                >
                 <ResponsiveNavLink :href="route('myfiles')"
                     >My Files</ResponsiveNavLink
                 >

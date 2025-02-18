@@ -23,7 +23,11 @@ watch(
     search,
     debounce((val) => {
         let url = "";
+        console.log(splited_url[1]);
         switch (splited_url[1]) {
+            case "dashboard":
+                url = "/dashboard";
+                break;
             case "myfiles":
                 url = "/myfiles";
                 break;

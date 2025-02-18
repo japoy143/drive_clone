@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MyFileController;
 use App\Http\Controllers\ProfileController;
@@ -23,7 +24,7 @@ Route::get('/', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/myfiles', [MyFileController::class, 'index'])->name('myfiles');
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/sharedfiles', [SharedFileController::class, 'index'])->name('sharedfiles');
 
