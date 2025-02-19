@@ -19,21 +19,29 @@
                         :key="file.id"
                         class="col-span-1 p-2"
                     >
-                        <div
-                            class="h-[60px] bg-slate-50 md:h-[140px] rounded-md flex flex-col items-center justify-center"
-                        >
-                            <PhotoIcon
-                                v-if="hasImage(file.mime)"
-                                class="size-8 md:size-28 text-gray-500"
-                            />
-                            <DocumentTextIcon
-                                v-else
-                                class="size-8 md:size-28 text-gray-500"
-                            />
+                        <div v-if="!file.is_folder">
+                            <div
+                                class="h-[60px] bg-slate-50 md:h-[140px] rounded-md flex flex-col items-center justify-center"
+                            >
+                                <PhotoIcon
+                                    v-if="hasImage(file.mime)"
+                                    class="size-8 md:size-28 text-gray-500"
+                                />
+                                <DocumentTextIcon
+                                    v-else
+                                    class="size-8 md:size-28 text-gray-500"
+                                />
+                            </div>
+                            <p class="text-xs md:text-base">
+                                {{
+                                    limitedLetters(
+                                        file.name,
+                                        file.mime,
+                                        file.id
+                                    )
+                                }}
+                            </p>
                         </div>
-                        <p class="text-xs md:text-base">
-                            {{ limitedLetters(file.name, file.mime, file.id) }}
-                        </p>
                     </div>
                 </div>
             </div>

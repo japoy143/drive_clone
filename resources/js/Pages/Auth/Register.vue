@@ -34,9 +34,9 @@ const submit = () => {
                 Or
                 <Link
                     :href="route('login')"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-black/75 focus:outline-none focus:bg-black/75 focus:shadow-outline-indigo active:bg-black/75 transition duration-150 ease-in-out"
+                    class="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150"
                 >
-                    Login to your account?
+                    Already have an account?
                 </Link>
             </p>
         </div>

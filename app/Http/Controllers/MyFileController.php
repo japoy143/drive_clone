@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Gate;
 
 use function Pest\Laravel\json;
 
@@ -14,17 +16,52 @@ class MyFileController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
-        return Inertia::render('MyFiles', [
-            'files' => File::when($request->search, function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->search . '%');
-            })->where('parent_id', '=', null)->get(),
+        // Get the search term from the request
+        $search = $request->input('search');
 
-            'searchTerm' => $request->search
+        // Build the query with proper error handling
+        $filesQuery = File::query()
+            ->where('parent_id', null);
+
+        // Apply search filter if search term exists
+        if (!empty($search)) {
+            $filesQuery->where('name', 'like', "%{$search}%");
+        }
+
+        // Execute the query and transform results
+        $files = $filesQuery->get()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'path' => $item->path,
+                'mime' => $item->mime,
+                '_lft' => $item->_lft,
+                '_rgt' => $item->_rgt,
+                'parent_id' => $item->parent_id,
+                'is_folder' => $item->is_folder,
+                'size' => $item->size,
+                'is_favorite' => $item->is_favorite,
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+                'created_by' => $item->created_by,
+                'updated_by' => $item->updated_by,
+                'deleted_at' => $item->deleted_at,
+                'is_shared' => $item->is_shared,
+                'can' => [
+                    'is_owned' => Gate::allows('view', $item),
+                ]
+            ];
+        });
+
+        // Return the response with proper data structure
+        return Inertia::render('MyFiles', [
+            'files' => $files,
+            'searchTerm' => $search
         ]);
     }
-
 
 
     public function rootToDirectory(Request $request)

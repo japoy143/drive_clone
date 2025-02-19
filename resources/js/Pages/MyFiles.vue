@@ -18,7 +18,7 @@
         >
             <div v-for="file in files" :key="file.id" class="mt-2">
                 <Link
-                    v-if="file.is_folder"
+                    v-if="file.is_folder && file.can.is_owned"
                     class="flex items-center justify-between h-[48px] p-2 w-[200px] border-2 border-black border-solid space-x-2 rounded"
                     :href="route('root.directory', file.name)"
                     @mouseover="onChangeHoverId($event, file.id)"
@@ -33,7 +33,7 @@
                 </Link>
                 <!-- if file, file container -->
                 <div
-                    v-else
+                    v-if="!file.is_folder && file.can.is_owned"
                     @mouseover="onChangeHoverId($event, file.id)"
                     class="flex gap-2"
                 >

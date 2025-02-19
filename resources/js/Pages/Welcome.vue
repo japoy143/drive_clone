@@ -83,11 +83,12 @@ function handleImageError() {
                 </div>
 
                 <div class="mt-4 flex">
-                    <button
+                    <Link
+                        :href="route('register')"
                         class="bg-black p-2 text-white rounded font-medium px-4"
                     >
                         Create Account Now
-                    </button>
+                    </Link>
                 </div>
 
                 <div class="mt-4 grid grid-cols-6">
