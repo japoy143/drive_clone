@@ -69,6 +69,7 @@ import {
     Squares2X2Icon,
     FolderIcon,
     PhotoIcon,
+    DocumentTextIcon,
 } from "@heroicons/vue/24/outline";
 
 import { Link, usePage } from "@inertiajs/vue3";

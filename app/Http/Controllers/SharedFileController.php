@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -19,6 +20,11 @@ class SharedFileController extends Controller
             'files' => File::when($request->search, function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->search . '%');
             })->where('is_shared', '=', 1)->get()
+                ->filter(fn($item) => $item->users->contains('id', Auth::id())) // Filter items that have the user
+                ->map(fn($item) => $item)
+
+
+
         ]);
     }
 

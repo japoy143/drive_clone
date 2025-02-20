@@ -32,8 +32,9 @@ class MyFileController extends Controller
         }
 
         // Execute the query and transform results
-        $files = $filesQuery->get()->map(function ($item) {
-            return [
+        $files = $filesQuery->get()
+            ->filter(fn($item) => Gate::allows('view', $item))
+            ->map(fn($item) => [
                 'id' => $item->id,
                 'name' => $item->name,
                 'path' => $item->path,
@@ -50,11 +51,7 @@ class MyFileController extends Controller
                 'updated_by' => $item->updated_by,
                 'deleted_at' => $item->deleted_at,
                 'is_shared' => $item->is_shared,
-                'can' => [
-                    'is_owned' => Gate::allows('view', $item),
-                ]
-            ];
-        });
+            ]);
 
         // Return the response with proper data structure
         return Inertia::render('MyFiles', [
