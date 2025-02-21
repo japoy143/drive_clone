@@ -118,13 +118,6 @@ const dropDownItems = [
         action: openToCreateNewFolderModal,
     },
     {
-        name: "Upload Folder",
-        active: false,
-        action: () => {
-            console.log("Upload Folder");
-        },
-    },
-    {
         name: "Upload File",
         active: false,
         action: openUploadFileModal,
